@@ -5,7 +5,7 @@ const cors = require("cors");
 const socketIo = require("socket.io");
 
 const app = express();
-const port = process.env.PORT || 5001;
+const PORT = process.env.PORT || 5001;
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
@@ -17,7 +17,14 @@ const io = socketIo(server, {
 // Middleware
 app.use(express.json());
 app.use(cors());
+
 app.get("/health", (req, res) => res.status(200).json({ status: "Server is running" }));
+
+// Routes
+// app.use("/api/users", userRoutes);  
+// app.use("/api/calls", callRoutes); 
+// app.use("/api/chat", chatRoutes);  
+// app.use('/api', statusRoutes);  
 
 // Map to track connected clients
 const clients = new Map();
@@ -50,10 +57,11 @@ io.on("connection", (socket) => {
   });
 });
 
-// Start server
-server.listen(port, "0.0.0.0", () => {
-  console.log(`Server started on port ${port}`);
+// Start Server
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
+
 
 // Error handling
 process.on("uncaughtException", (err) => console.error("Uncaught Exception:", err));

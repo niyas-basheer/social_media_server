@@ -1,5 +1,5 @@
 const express = require('express');
-const User = require('./userModel'); // Import your User model
+const User = require('./userModel'); 
 const router = express.Router();
 
 // Create User
