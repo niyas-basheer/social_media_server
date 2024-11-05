@@ -1,16 +1,16 @@
 const mongoose = require("mongoose");
 
-// Define the User schema
+
 const userSchema = new mongoose.Schema({
   username: {
     type: String,
     required: true,
-    unique: true, // Ensure usernames are unique
+    unique: true, 
   },
   email: {
     type: String,
     required: true,
-    unique: true, // Ensure emails are unique
+    unique: true, 
   },
   phoneNumber: {
     type: String,
@@ -18,12 +18,12 @@ const userSchema = new mongoose.Schema({
   },
   isOnline: {
     type: Boolean,
-    default: false, // Default value for online status
+    default: false, 
   },
   uid: {
     type: String,
     required: true,
-    unique: true, // Ensure UIDs are unique
+    unique: true, 
   },
   status: {
     type: String,
@@ -32,7 +32,7 @@ const userSchema = new mongoose.Schema({
     type: String,
   },
 }, {
-  timestamps: true, // Automatically add createdAt and updatedAt timestamps
+  timestamps: true, 
 });
 
 // Create and export the User model
