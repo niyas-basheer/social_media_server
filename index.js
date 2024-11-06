@@ -34,13 +34,6 @@ dbconnect()
 app.use(express.json());
 app.use(cors());
 
-app.post("/api/getdata", (req, res) => {
-  console.log("🚀 ~ file: index.js:37 ~ app.get ~ req:", req);
-  console.log("................................")
-  const data = req.body;
-  console.log("🚀 ~ file: index.js:41 ~ app.get ~ data:", data);
-  res.json("got data")
-});
 
 app.use("/api/messages", messageRoutes);
 app.use("/api/users", userRoutes);

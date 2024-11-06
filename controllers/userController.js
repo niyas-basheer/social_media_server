@@ -7,6 +7,7 @@ const OTP_EXPIRY = 300000;
 // Controller for creating a user
 const createUser = async (req, res) => {
     try {
+        console.log(req.body)
         const user = new User(req.body);
         await user.save();
         res.status(201).send(user);
