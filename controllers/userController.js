@@ -2,7 +2,7 @@ const User = require('../models/userModel');
 const { generateOtp, sendOtp } = require('../utils/otpHelper');
 const randomToken = require('random-token').create(process.env.SECURITY_KEY);
 
-const OTP_EXPIRY = 300000; // OTP valid for 5 minutes
+const OTP_EXPIRY = 300000; 
 
 // Controller for creating a user
 const createUser = async (req, res) => {
