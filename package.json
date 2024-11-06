@@ -1,0 +1,37 @@
+{
+  "name": "server_social",
+  "version": "1.0.0",
+  "description": "Server for social media project",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "echo 'No tests yet.'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/niyas-basheer/server_social_media.git"
+  },
+  "author": "Niyas Basheer",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/niyas-basheer/server_social_media/issues"
+  },
+  "homepage": "https://github.com/niyas-basheer/server_social_media#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "mongoose": "^8.8.0",
+    "nodemon": "^3.1.7",
+    "random-token": "^0.0.8",
+    "socket.io": "^4.8.1"
+  },
+  "keywords": [
+    "social media",
+    "server",
+    "nodejs",
+    "express",
+    "mongoose"
+  ]
+}
