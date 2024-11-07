@@ -1,4 +1,3 @@
-// socket.js
 const clients = new Map();
 
 function initializeSocket(io) {

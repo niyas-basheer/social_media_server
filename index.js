@@ -25,15 +25,23 @@ const io = socketIo(server, {
   },
 });
 
-//database connection
-dbconnect()
-  .then(() => console.log("Database connection successful"))
-  .catch(console.error);
+(async () => {
+  try {
+    await dbconnect();
+    initializeSocket(io);
+
+    server.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+    });
+  } catch (error) {
+    console.error("Database connection failed:", error);
+    process.exit(1);
+  }
+})();
 
 // Middleware
 app.use(express.json());
 app.use(cors());
-
 
 app.use("/api/messages", messageRoutes);
 app.use("/api/users", userRoutes);
@@ -41,18 +49,13 @@ app.use("/api/calls", callRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/statues", statusRoutes);
 
-// Import and initialize socket
-initializeSocket(io);
 
-// Start Server
-server.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
 
 // Error handling
-process.on("uncaughtException", (err) =>
-  console.error("Uncaught Exception:", err)
-);
-process.on("unhandledRejection", (reason, promise) =>
-  console.error("Unhandled Rejection:", reason)
-);
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(err.status || 500).json({
+    success: false,
+    message: err.message || "Internal Server Error",
+  });
+});
