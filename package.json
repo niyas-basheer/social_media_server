@@ -25,7 +25,8 @@
     "mongoose": "^8.8.0",
     "nodemon": "^3.1.7",
     "random-token": "^0.0.8",
-    "socket.io": "^4.8.1"
+    "socket.io": "^4.8.1",
+    "twilio": "^5.3.5"
   },
   "keywords": [
     "social media",
