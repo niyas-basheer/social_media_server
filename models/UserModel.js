@@ -14,11 +14,6 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false, 
   },
-  uid: {
-    type: String,
-    required: true,
-    unique: true, 
-  },
   status: {
     type: String,
   },

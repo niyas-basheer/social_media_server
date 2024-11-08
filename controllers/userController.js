@@ -1,4 +1,4 @@
-const OTP = require("../models/OtpModel");
+const OtpModel = require("../models/OtpModel");
 const User = require("../models/userModel");
 const { generateOtp, sendOtp } = require("../utils/otpHelper");
 const randomToken = require("random-token").create(process.env.SECURITY_KEY);
@@ -82,9 +82,9 @@ const requestOtp = async (req, res) => {
 
     const otpValue = generateOtp();
 
-    otpEntry = new OTP({
+    otpEntry = new OtpModel({
       phone,
-      otp:otpValue,
+      otp: otpValue,
     });
 
     await otpEntry.save();
@@ -101,23 +101,41 @@ const requestOtp = async (req, res) => {
 const loginWithOtp = async (req, res) => {
   const { phone, otp } = req.body;
   try {
-    const user = await User.findOne({ phone });
-    if (!user) return res.status(404).json("User not found.");
+    const otpEntry = await OtpModel.findOne({ phone });
 
-    if (user.otp !== otp || Date.now() > user.otpExpiry) {
-      return res.status(400).json("Invalid or expired OTP.");
+    if (!otpEntry)
+      return res.status(404).json("OTP not found for this phone number.");
+
+    if (otpEntry.otp !== otp) {
+      return res.status(400).json("Invalid OTP.");
     }
 
-    // OTP is valid, generate token
-    const token = randomToken(50);
-    user.token = token;
-    user.otp = null; // Clear OTP after successful login
-    user.otpExpiry = null;
+    if (Date.now() > otpEntry.otpExpiry) {
+      return res.status(400).json("OTP Expired");
+    }
 
+    otpEntry.otp = null;
+    otpEntry.otpExpiry = null;
+    await otpEntry.save();
+
+    let user = await User.findOne({ phoneNumber: phone });
+
+    if (!user) {
+      user = new User({
+        username: `user_${phone}`,
+        phoneNumber: phone,
+        status: "active",
+      });
+
+      await user.save();
+    };
+
+    user.isOnline = true;
     await user.save();
-    res.json({ message: "Login successful", token });
+    res.json({ message: "Login successful", user });
   } catch (err) {
-    res.status(500).json("Error occurred: " + err);
+    console.error("Error occurred:", err);
+    res.status(500).json("Error occurred: " + err.message);
   }
 };
 
