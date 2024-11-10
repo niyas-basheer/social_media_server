@@ -10,9 +10,10 @@ const {
   resendOtp,
   updateUser,
 } = require("../controllers/userController");
+const upload = require("../middleware/upload");
 
 // Create User, Get All Users
-router.route("/users").post(createUser).get(getAllUsers)
+router.route("/users").post(upload.single("imgURL"), createUser).get(getAllUsers);
 
 // Get Single User by UID, Update User, Delete User
 router.route("/users/:uid").get(getUserByUid).put(updateUser).delete(deleteUser)

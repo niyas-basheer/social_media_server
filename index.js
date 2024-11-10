@@ -3,6 +3,7 @@ const express = require("express");
 const http = require("http");
 const cors = require("cors");
 const socketIo = require("socket.io");
+const logger = require("morgan");
 const dbconnect = require("./config/db");
 
 // Routes
@@ -20,7 +21,8 @@ const server = http.createServer(app);
 
 const io = socketIo(server, {
   cors: {
-    origin: ["http://localhost:5001"],
+    // origin: ["http://localhost:5001"],
+    origin: "*",
     methods: ["GET", "POST"],
   },
 });
@@ -40,8 +42,10 @@ const io = socketIo(server, {
 })();
 
 // Middleware
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
+app.use(logger("dev")); 
 
 app.use("/api/messages", messageRoutes);
 app.use("/api/users", userRoutes);
@@ -49,7 +53,8 @@ app.use("/api/calls", callRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/statues", statusRoutes);
 
-
+// Public Api for accessing images
+app.use("/api/img", express.static(__dirname + "/public/profile/"));
 
 // Error handling
 app.use((err, req, res, next) => {

@@ -7,12 +7,13 @@ const randomToken = require("random-token").create(process.env.SECURITY_KEY);
 const createUser = async (req, res) => {
   try {
     console.log(req.body);
-    const { username, phone, photo } = req.body;
+    const { username, phone } = req.body;
+    const imgURL = req?.file?.filename;
 
     
     const updateData = { username };
     if (photo) {
-      updateData.profileUrl = photo;
+      updateData.profileUrl = imgURL;
     }
 
     
