@@ -99,11 +99,14 @@ const requestOtp = async (req, res) => {
 
 // Controller for logging in with OTP
 const loginWithOtp = async (req, res) => {
+  console.log("Request Body:", req.body); // Log the request body
   const { phone, otp } = req.body;
+
   try {
     const otpEntry = await OtpModel.findOne({ phone });
-
+    console.log("otpEntry:",otpEntry);
     if (!otpEntry)
+
       return res.status(404).json("OTP not found for this phone number.");
 
     if (otpEntry.otp !== otp) {
@@ -113,14 +116,15 @@ const loginWithOtp = async (req, res) => {
     if (Date.now() > otpEntry.otpExpiry) {
       return res.status(400).json("OTP Expired");
     }
-
-    otpEntry.otp = null;
-    otpEntry.otpExpiry = null;
+    
+    
+    console.log("Request Body:1");
     await otpEntry.save();
-
+    console.log("Request Body:2");
     let user = await User.findOne({ phoneNumber: phone });
 
     if (!user) {
+      console.log("Request Body:3");
       user = new User({
         username: `user_${phone}`,
         phoneNumber: phone,
@@ -129,10 +133,12 @@ const loginWithOtp = async (req, res) => {
 
       await user.save();
     };
-
+    console.log("Request Body:4");
     user.isOnline = true;
     await user.save();
+
     res.json({ message: "Login successful", user });
+    console.log("Request Body:5");
   } catch (err) {
     console.error("Error occurred:", err);
     res.status(500).json("Error occurred: " + err.message);
