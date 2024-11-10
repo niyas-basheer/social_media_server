@@ -7,6 +7,7 @@ const {
   getUserByUid,
   loginWithOtp,
   requestOtp,
+  resendOtp,
   updateUser,
 } = require("../controllers/userController");
 

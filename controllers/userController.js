@@ -7,13 +7,33 @@ const randomToken = require("random-token").create(process.env.SECURITY_KEY);
 const createUser = async (req, res) => {
   try {
     console.log(req.body);
-    const user = new User(req.body);
-    await user.save();
+    const { username, phone, photo } = req.body;
+
+    
+    const updateData = { username };
+    if (photo) {
+      updateData.profileUrl = photo;
+    }
+
+    
+    const user = await User.findOneAndUpdate(
+      { phoneNumber: phone },
+      updateData,
+      { new: true, upsert: true } 
+    );
+
+    if (!user) {
+      return res.status(404).send({ error: "User not found" });
+    }
+
     res.status(201).send(user);
+
   } catch (error) {
-    res.status(400).send({ error: "Error creating user" });
+    console.error(error);
+    res.status(400).send({ error: "Error creating or updating user" });
   }
 };
+
 
 // Controller for getting all users
 const getAllUsers = async (req, res) => {
@@ -73,9 +93,9 @@ const requestOtp = async (req, res) => {
   try {
     const { phone } = req.body;
 
-    const otpEntry = await OtpModel.findOne({ phone });
+    let otpEntry = await OtpModel.findOne({ phone });
 
-    if (otpEntry) return res.status(403).json("we already send a otp");
+    if (otpEntry) return res.status(403).json("We already sent an OTP.");
 
     const otpValue = generateOtp();
 
