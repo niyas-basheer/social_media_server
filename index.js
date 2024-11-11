@@ -54,7 +54,7 @@ app.use("/api/chat", chatRoutes);
 app.use("/api/statues", statusRoutes);
 
 // Public Api for accessing images
-app.use("/api/img", express.static(__dirname + "/public/profile/"));
+app.use("/api/img", express.static(__dirname + "/public/"));
 
 // Error handling
 app.use((err, req, res, next) => {

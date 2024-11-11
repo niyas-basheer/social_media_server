@@ -7,19 +7,11 @@ const randomToken = require("random-token").create(process.env.SECURITY_KEY);
 const createUser = async (req, res) => {
   try {
     console.log(req.body);
-    const { username, phone } = req.body;
-    const imgURL = req?.file?.filename;
+    const { username, phone, photo } = req.body;
 
-    
-    const updateData = { username };
-    if (photo) {
-      updateData.profileUrl = imgURL;
-    }
-
-    
     const user = await User.findOneAndUpdate(
       { phoneNumber: phone },
-      updateData,
+      { username, profileUrl: photo },
       { new: true, upsert: true } 
     );
 
