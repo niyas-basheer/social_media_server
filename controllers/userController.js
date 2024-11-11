@@ -7,11 +7,13 @@ const randomToken = require("random-token").create(process.env.SECURITY_KEY);
 const createUser = async (req, res) => {
   try {
     console.log(req.body);
-    const { username, phone, photo } = req.body;
+    const { username, phone } = req.body;
+    const imgURL = req?.file?.filename;
 
+    
     const user = await User.findOneAndUpdate(
       { phoneNumber: phone },
-      { username, profileUrl: photo },
+      { username, profileUrl: imgURL },
       { new: true, upsert: true } 
     );
 
@@ -19,8 +21,7 @@ const createUser = async (req, res) => {
       return res.status(404).send({ error: "User not found" });
     }
 
-    res.status(201).send(user);
-
+    res.status(201).send({success:true,data:user,message:"user profile updated"});
   } catch (error) {
     console.error(error);
     res.status(400).send({ error: "Error creating or updating user" });
