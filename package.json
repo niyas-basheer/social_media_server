@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/niyas-basheer/server_social_media.git"
+    "url": "git+https://github.com/niyas-basheer/social_media_server.git"
   },
   "author": "Niyas Basheer",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/niyas-basheer/server_social_media/issues"
+    "url": "https://github.com/niyas-basheer/social_media_server/issues"
   },
-  "homepage": "https://github.com/niyas-basheer/server_social_media#readme",
+  "homepage": "https://github.com/niyas-basheer/social_media_server#readme",
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
