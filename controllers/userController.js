@@ -1,5 +1,5 @@
-const OtpModel = require("../models/OtpModel");
 const User = require("../models/userModel");
+const OtpModel = require("../models/OtpModel");
 const { generateOtp, sendOtp } = require("../utils/otpHelper");
 const randomToken = require("random-token").create(process.env.SECURITY_KEY);
 
@@ -7,8 +7,7 @@ const randomToken = require("random-token").create(process.env.SECURITY_KEY);
 const createUser = async (req, res) => {
   try {
     console.log(req.body);
-    const { username, phone } = req.body;
-    const imgURL = req?.file?.filename;
+    const { username, phone,imgURL } = req.body;
 
     
     const user = await User.findOneAndUpdate(
@@ -33,7 +32,7 @@ const createUser = async (req, res) => {
 const getAllUsers = async (req, res) => {
   try {
     const users = await User.find();
-    res.send(users);
+    res.status(200).json({success:true,data:users,message:"users data retrived"})
   } catch (error) {
     res.status(400).send({ error: "Error fetching users" });
   }
@@ -42,11 +41,11 @@ const getAllUsers = async (req, res) => {
 // Controller for getting a single user by UID
 const getUserByUid = async (req, res) => {
   try {
-    const user = await User.findOne({ uid: req.params.uid });
+    const user = await User.findById(req.params.uid);
     if (!user) {
       return res.status(404).send({ error: "User not found" });
     }
-    res.send(user);
+    res.status(200).json({success:true,data:user,message:"user data retrived"})
   } catch (error) {
     res.status(400).send({ error: "Error fetching user" });
   }
