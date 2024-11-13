@@ -1,4 +1,4 @@
-const User = require("../models/userModel");
+const User = require("../models/UserModel");
 const OtpModel = require("../models/OtpModel");
 const { generateOtp, sendOtp } = require("../utils/otpHelper");
 const randomToken = require("random-token").create(process.env.SECURITY_KEY);
