@@ -1,5 +1,5 @@
 const Chat = require('../models/ChatModel');
-const Message = require('../models/MessageModel');
+const Message = require('../models/essageModel');
 const { v1: uuidv1 } = require('uuid');
 
 // Save a new chat message
