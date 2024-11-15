@@ -51,7 +51,7 @@ app.use("/api/messages", messageRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/calls", callRoutes);
 app.use("/api/chat", chatRoutes);
-app.use("/api/statues", statusRoutes);
+app.use("/api/status", statusRoutes);
 
 // Public Api for accessing images
 app.use("/api/img", express.static(__dirname + "/public/"));

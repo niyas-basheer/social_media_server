@@ -40,7 +40,7 @@ const statusSchema = new mongoose.Schema({
   caption: {
     type: String,
   },
-  stories: [statusImageSchema], // Array of status images
+  stories: [statusImageSchema], 
 });
 
 // Create and export the Status model
