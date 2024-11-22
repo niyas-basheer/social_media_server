@@ -1,6 +1,13 @@
 const mongoose = require("mongoose");
 
 const callSchema = new mongoose.Schema({
+  participants: [
+    {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'users',
+        required: true
+    }
+],
   callId: {
     type: String,
     required: true,

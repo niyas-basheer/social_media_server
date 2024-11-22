@@ -54,6 +54,7 @@ const getUserByUid = async (req, res) => {
 // Controller for updating a user
 const updateUser = async (req, res) => {
   try {
+    console.log(req.body)
     const user = await User.findOneAndUpdate(
       { uid: req.params.uid },
       req.body,

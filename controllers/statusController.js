@@ -1,14 +1,19 @@
+const { console } = require('inspector');
 const StatusModel = require('../models/StatusModel');
 
 // Create a new status
 exports.createStatus = async (req, res) => {
     try {
+        console.log(req.body,'create satues');
         const { content } = req.body;
         const newStatus = new StatusModel({ content });
         await newStatus.save();
         res.status(201).json({ message: 'Status created successfully', newStatus });
     } catch (error) {
+        console.log(error);
+        
         res.status(500).json({ message: 'Error creating status', error });
+
     }
 };
 
@@ -27,9 +32,9 @@ exports.getStatusById = async (req, res) => {
     try {
         const status = await StatusModel.findById(req.params.id);
         if (!status) {
-            return res.status(404).json({ message: 'Status not found' });
+            return res.status(404).json({ message: 'Status not found',data: [],success:false })
         }
-        res.status(200).json(status);
+        res.status(200).json({data:status,success:true,message:'status retrived '});
     } catch (error) {
         res.status(500).json({ message: 'Error fetching status', error });
     }

@@ -2,7 +2,7 @@ const Chat = require('../models/ChatModel');
 const Message = require('../models/MessageModel');
 
 // Save a new chat message
-exports.saveMessage = async (req, res) => {
+async function saveMessage(req, res) {
   try {
     const newMessage = new Message({
       senderUid: req.body.senderUid,
@@ -32,10 +32,10 @@ exports.saveMessage = async (req, res) => {
   } catch (error) {
     res.status(400).json({ error: 'Error saving message' });
   }
-};
+}
 
 // Retrieve chat messages
-exports.getMessages = async (req, res) => {
+async function getMessages(req, res) {
   try {
     const messages = await Message.find({
       $or: [
@@ -47,20 +47,20 @@ exports.getMessages = async (req, res) => {
   } catch (error) {
     res.status(400).json({ error: 'Error retrieving messages' });
   }
-};
+}
 
 // Delete chat message
-exports.deleteMessage = async (req, res) => {
+async function deleteMessage(req, res) {
   try {
     await Message.deleteOne({ messageId: req.body.messageId });
     res.status(200).json({ success: true, message: 'Message deleted' });
   } catch (error) {
     res.status(400).json({ error: 'Error deleting message' });
   }
-};
+}
 
 // Update message seen status
-exports.seenMessageUpdate = async (req, res) => {
+async function seenMessageUpdate(req, res) {
   try {
     const message = await Message.findOneAndUpdate(
       { messageId: req.body.messageId },
@@ -71,4 +71,12 @@ exports.seenMessageUpdate = async (req, res) => {
   } catch (error) {
     res.status(400).json({ error: 'Error updating message status' });
   }
+}
+
+// Export the functions
+module.exports = {
+  saveMessage,
+  getMessages,
+  deleteMessage,
+  seenMessageUpdate,
 };

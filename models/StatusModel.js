@@ -1,34 +1,37 @@
 const mongoose = require("mongoose");
 
-// Define the StatusImage schema for stories
 const statusImageSchema = new mongoose.Schema({
   imageUrl: {
     type: String,
     required: true,
+    trim: true,
   },
-  // Add any additional fields for status images here
-});
+}, { _id: false });
 
-// Define the main Status schema
 const statusSchema = new mongoose.Schema({
   statusId: {
     type: String,
     required: true,
     unique: true,
+    trim: true,
   },
   imageUrl: {
     type: String,
+    trim: true,
   },
   uid: {
     type: String,
     required: true,
+    trim: true,
   },
   username: {
     type: String,
     required: true,
+    trim: true,
   },
   profileUrl: {
     type: String,
+    trim: true,
   },
   createdAt: {
     type: Date,
@@ -36,11 +39,16 @@ const statusSchema = new mongoose.Schema({
   },
   phoneNumber: {
     type: String,
+    trim: true,
   },
   caption: {
     type: String,
+    trim: true,
   },
   stories: [statusImageSchema], 
+}, {
+  timestamps: true,
+  versionKey: false,
 });
 
 // Create and export the Status model

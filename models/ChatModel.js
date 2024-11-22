@@ -1,13 +1,29 @@
 const mongoose = require("mongoose");
 
 const chatSchema = new mongoose.Schema({
-  senderUid: {
+  participants: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+    }
+  ],
+  type: {
     type: String,
+    enum: ['individual', 'group'], // Determines if it's an individual or group chat
     required: true,
   },
+  senderUid: {
+    type:mongoose.Schema.Types.ObjectId,
+    required: function () {
+      return this.type === 'individual'; // Required only for individual chats
+    },
+  },
   recipientUid: {
-    type: String,
-    required: true,
+    type: mongoose.Schema.Types.ObjectId,
+    required: function () {
+      return this.type === 'individual'; // Required only for individual chats
+    },
   },
   senderName: {
     type: String,
@@ -32,6 +48,31 @@ const chatSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  groupName: {
+    type: String,
+    required: function () {
+      return this.type === 'group'; 
+    },
+  },
+  groupDescription: {
+    type: String,
+  },
+  groupIcon: {
+    type: String,
+  },
+  groupAdmins: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+    }
+  ],
+  messages: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Message',
+    }
+  ],
 });
+
 
 module.exports = mongoose.model("Chat", chatSchema);
