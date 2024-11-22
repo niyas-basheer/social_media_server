@@ -33,10 +33,6 @@ const statusSchema = new mongoose.Schema({
     type: String,
     trim: true,
   },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
   phoneNumber: {
     type: String,
     trim: true,

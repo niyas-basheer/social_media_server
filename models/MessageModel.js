@@ -32,10 +32,6 @@ const messageSchema = new Schema({
     required: true,
     trim: true
   },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
   isSeen: {
     type: Boolean,
     default: false,
