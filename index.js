@@ -23,7 +23,7 @@ const io = socketIo(server, {
   cors: {
     // origin: ["http://localhost:5001"],
     origin: "*",
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST","PATCH","DELETE","PUT"],
   },
 });
 

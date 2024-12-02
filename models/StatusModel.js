@@ -1,25 +1,32 @@
 const mongoose = require("mongoose");
 
 const statusImageSchema = new mongoose.Schema({
-  imageUrl: {
+  url: {
     type: String,
     required: true,
     trim: true,
   },
+  type:{
+    type:String,
+    required:true,
+    trim:true
+  },
+  
+  viewers:[
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    }
+  ]
+
 }, { _id: false });
 
 const statusSchema = new mongoose.Schema({
-  statusId: {
-    type: String,
-    required: true,
-    unique: true,
-    trim: true,
-  },
   imageUrl: {
     type: String,
     trim: true,
   },
-  uid: {
+  useruid: {
     type: String,
     required: true,
     trim: true,

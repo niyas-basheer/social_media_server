@@ -1,82 +1,79 @@
-const Chat = require('../models/ChatModel');
-const Message = require('../models/MessageModel');
+const Chat = require("../models/ChatModel");
+const Message = require("../models/MessageModel");
 
-// Save a new chat message
-async function saveMessage(req, res) {
+// Create a new chat
+const createChat = async (req, res) => {
+    try {
+      console.log(req.bodyh);
+      
+        const chatData = req.body;
+        const newChat = await Chat.create(chatData);
+        res.status(201).json(newChat);
+    } catch (error) {
+        console.error("Error creating chat:", error);
+        res.status(500).json({ error: "Failed to create chat" });
+    }
+};
+
+const getUserChats = async (req, res) => {
+  const { userId } = req.params;
+
   try {
-    const newMessage = new Message({
-      senderUid: req.body.senderUid,
-      recipientUid: req.body.recipientUid,
-      senderName: req.body.senderName,
-      recipientName: req.body.recipientName,
-      createdAt: req.body.createdAt,
-      message: req.body.message,
-      messageType: req.body.messageType,
-      repliedTo: req.body.repliedTo,
-      repliedMessage: req.body.repliedMessage,
-      isSeen: req.body.isSeen,
-      messageId: req.body.messageId,
-      repliedMessageType: req.body.repliedMessageType,
-    });
+      const chats = await Chat.find({
+          participants: userId
+      })
+      .populate({
+          path: "participants",
+          select: "_id name", // Populate participant IDs and names (optional)
+      })
+      .populate({
+          path: "messages",
+          select: "_id", // Only retrieve message IDs
+      });
 
-    const savedMessage = await newMessage.save();
+      // Transform the response to include only the array of message IDs
+      const transformedChats = chats.map(chat => ({
+          ...chat._doc, // Retain other chat properties
+          messages: chat.messages.map(message => message._id) // Extract only the message IDs
+      }));
 
-    // Add the message to the chat
-    const chat = await Chat.findOneAndUpdate(
-      { senderUid: req.body.senderUid, recipientUid: req.body.recipientUid },
-      { recentTextMessage: req.body.message, createdAt: new Date() },
-      { new: true, upsert: true }
-    );
-
-    res.status(201).json({ success: true, data: savedMessage, chat });
+      res.status(200).json(transformedChats);
   } catch (error) {
-    res.status(400).json({ error: 'Error saving message' });
+      console.error("Error fetching chats:", error);
+      res.status(500).json({ error: "Failed to fetch chats" });
   }
-}
+};
 
-// Retrieve chat messages
-async function getMessages(req, res) {
-  try {
-    const messages = await Message.find({
-      $or: [
-        { senderUid: req.params.user1, recipientUid: req.params.user2 },
-        { senderUid: req.params.user2, recipientUid: req.params.user1 },
-      ],
-    }).sort('createdAt');
-    res.status(200).json(messages);
-  } catch (error) {
-    res.status(400).json({ error: 'Error retrieving messages' });
-  }
-}
 
-// Delete chat message
-async function deleteMessage(req, res) {
-  try {
-    await Message.deleteOne({ messageId: req.body.messageId });
-    res.status(200).json({ success: true, message: 'Message deleted' });
-  } catch (error) {
-    res.status(400).json({ error: 'Error deleting message' });
-  }
-}
+const updateChat = async (req, res) => {
+    const { chatId } = req.params;
+    try {
+        const updatedChat = await Chat.findByIdAndUpdate(
+            chatId,
+            req.body,
+            { new: true }
+        );
+        res.status(200).json(updatedChat);
+    } catch (error) {
+        console.error("Error updating chat:", error);
+        res.status(500).json({ error: "Failed to update chat" });
+    }
+};
 
-// Update message seen status
-async function seenMessageUpdate(req, res) {
-  try {
-    const message = await Message.findOneAndUpdate(
-      { messageId: req.body.messageId },
-      { isSeen: req.body.isSeen },
-      { new: true }
-    );
-    res.status(200).json({ success: true, data: message });
-  } catch (error) {
-    res.status(400).json({ error: 'Error updating message status' });
-  }
-}
-
-// Export the functions
+// Delete a chat
+const deleteChat = async (req, res) => {
+    const { chatId } = req.params;
+    try {
+        await Chat.findByIdAndDelete(chatId);
+        res.status(200).json({ message: "Chat deleted successfully" });
+    } catch (error) {
+        console.error("Error deleting chat:", error);
+        res.status(500).json({ error: "Failed to delete chat" });
+    }
+};
 module.exports = {
-  saveMessage,
-  getMessages,
-  deleteMessage,
-  seenMessageUpdate,
+ createChat,
+ getUserChats,
+ updateChat,
+ deleteChat
 };

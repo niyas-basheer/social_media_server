@@ -10,19 +10,19 @@ const chatSchema = new mongoose.Schema({
   ],
   type: {
     type: String,
-    enum: ['individual', 'group'], // Determines if it's an individual or group chat
-    required: true,
+    enum: ['individual', 'group'], 
+    required: true
   },
   senderUid: {
     type:mongoose.Schema.Types.ObjectId,
     required: function () {
-      return this.type === 'individual'; // Required only for individual chats
+      return this.type === 'individual'; 
     },
   },
   recipientUid: {
     type: mongoose.Schema.Types.ObjectId,
     required: function () {
-      return this.type === 'individual'; // Required only for individual chats
+      return this.type === 'individual'; 
     },
   },
   senderName: {
@@ -34,10 +34,7 @@ const chatSchema = new mongoose.Schema({
   recentTextMessage: {
     type: String,
   },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
+  
   senderProfile: {
     type: String,
   },
@@ -70,9 +67,11 @@ const chatSchema = new mongoose.Schema({
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Message',
+      default:[]
     }
   ],
-});
+},{ timestamps: true });
+
 
 
 module.exports = mongoose.model("Chat", chatSchema);

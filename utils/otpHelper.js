@@ -15,11 +15,11 @@ const generateOtp = () =>
 
 const sendOtp = async (phone, otp) => {
   try {
-    await client.messages.create({
-      body: `Your OTP verification code is ${otp}`,
-      from: "+12532525189",
-      to: phone,
-    });
+    // await client.messages.create({
+    //   body: `Your OTP verification code is ${otp}`,
+    //   from: "+12532525189",
+    //   to: phone,
+    // });
 
     console.log(`Sending OTP ${otp} to phone number ${phone}`);
     return { success: true, message: "Message Sent" };

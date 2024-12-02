@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const {
+  updateViewers,
   createStatus,
   deleteStatus,
   getAllStatuses,
@@ -19,6 +20,11 @@ router.get("/status/:id", getStatusById);
 
 // Route to update a status by ID
 router.put("/status/:id", updateStatus);
+
+
+router.patch("/status/updateViewers", updateViewers);
+
+
 
 // Route to delete a status by ID
 router.delete("/status/:id", deleteStatus);

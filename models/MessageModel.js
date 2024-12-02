@@ -1,11 +1,7 @@
 const { Schema, model } = require("mongoose");
 
 const messageSchema = new Schema({
-  chat: {
-    type: Schema.Types.ObjectId,
-    ref: 'Chat',
-    required: true
-  },
+  
   senderUid: {
     type: Schema.Types.ObjectId,
     required: true,
@@ -24,7 +20,7 @@ const messageSchema = new Schema({
   },
   messageType: {
     type: String,
-    enum: ['text', 'image', 'video', 'file'],
+    enum: ["textMessage","fileMessage","emojiMessage","photoMessage","audioMessage","videoMessage","gifMessage",],
     default: 'text'
   },
   message: {

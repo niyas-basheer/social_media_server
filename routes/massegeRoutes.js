@@ -1,10 +1,11 @@
-const express = require('express');
-const { sendMessage, getMessages, deleteMessage } = require('../controllers/messageController');
-
+const express = require("express");
 const router = express.Router();
+const messageController = require("../controllers/messageController");
 
-router.post('/', sendMessage);
-router.get('/:chatId', getMessages);
-router.delete('/:messageId', deleteMessage);
+// Routes for messages
+router.post("/", messageController.sendMessage);
+router.get("/:chatId", messageController.getMessages);
+router.put("/:messageId", messageController.updateMessage);
+router.delete("/:messageId", messageController.deleteMessage);
 
 module.exports = router;
